@@ -22,6 +22,7 @@
 </template>
 
 <script>
+/* global pendo */
 import TodoService from '../api/todo.api'
 export default {
   name: 'NewTodo',
@@ -41,6 +42,12 @@ export default {
       }
       TodoService.createTodo(todo)
         .then(() => {
+          // Track successful todo creation
+          if (typeof pendo !== 'undefined') {
+            pendo.track('todo_created', {
+              outcome: 'success',
+            })
+          }
           this.$emit('added-new-todo')
           this.clearInput()
           this.success = true
